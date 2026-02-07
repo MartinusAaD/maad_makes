@@ -8,7 +8,7 @@ import { useAuth } from "./context/AuthContext";
 import { trackPageView } from "./utils/analytics";
 
 function App() {
-  const { currentUser } = useAuth();
+  const { currentUser, isAdmin } = useAuth();
   const location = useLocation();
 
   // Track page views on route change
@@ -23,7 +23,7 @@ function App() {
       <ScrollToTop />
       <header>
         <Navbar />
-        {currentUser && <NavbarAdmin />}
+        {currentUser && isAdmin && <NavbarAdmin />}
       </header>
       <main className="min-h-screen">
         <Outlet />
