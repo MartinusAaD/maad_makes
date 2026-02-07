@@ -118,7 +118,8 @@ const EmailVerification = () => {
             </p>
             <p className="text-gray-600">
               Please check your inbox and click the verification link to
-              activate your account.
+              activate your account. If it's not in your inbox, check the spam
+              folder!
             </p>
           </div>
 
