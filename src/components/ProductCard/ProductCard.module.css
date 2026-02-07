@@ -1,0 +1,93 @@
+/* Product card styles used in Store grid */
+.productCard {
+  overflow: hidden;
+  padding: var(--spacing-small);
+  border-radius: var(--border-radius-small);
+  transition:
+    transform 200ms cubic-bezier(0.34, 1.56, 0.64, 1),
+    box-shadow 200ms ease;
+  text-decoration: none;
+  background-color: white;
+  box-shadow: 0 5px 10px rgba(16, 24, 40, 0.4);
+
+  /* Fade-in animation */
+  animation: fadeInScale 0.5s ease-out forwards;
+  opacity: 0;
+  transform: scale(0.9);
+}
+
+@keyframes fadeInScale {
+  from {
+    opacity: 0;
+    transform: scale(0.9) translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.productCard:hover,
+.productCard:focus {
+  transform: scale(1.08) translateY(-4px);
+  box-shadow: 0 12px 24px rgba(16, 24, 40, 0.5);
+  z-index: 1001;
+}
+
+.thumbnailImage {
+  width: 100%;
+  object-fit: cover;
+  border-radius: var(--border-radius-xs);
+}
+
+.placeholderImage {
+  width: 100%;
+  height: 180px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(180deg, #fafafa, #f2f2f4);
+  color: #666;
+  font-size: 14px;
+}
+
+.thumbnailTitle {
+  padding: var(--spacing-small) 0;
+  font-size: var(--font-size-small);
+  font-weight: bold;
+  color: var(--font-color-dark);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding-left: 0; /* explicit no padding */
+}
+
+.priceContainer {
+  display: flex;
+  gap: var(--spacing-small);
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.price {
+  color: var(--font-color-light);
+  font-weight: bold;
+  background-color: var(--primary-color);
+  padding: var(--spacing-xs) var(--spacing-small);
+  border-radius: var(--border-radius-large);
+}
+
+.priceOriginal {
+  color: #999;
+  font-weight: normal;
+  text-decoration: line-through;
+  font-size: var(--font-size-small);
+}
+
+.priceSale {
+  color: var(--font-color-dark);
+  font-weight: bold;
+  background-color: var(--color-yellow);
+  padding: var(--spacing-xs) var(--spacing-small);
+  border-radius: var(--border-radius-large);
+}

@@ -1,0 +1,19 @@
+.button {
+  width: 100%;
+  font-size: var(--font-size-medium);
+  padding: var(--spacing-xs);
+  border-radius: var(--border-radius-xs);
+  border: 2px inset #19567249;
+  color: var(--font-color-light);
+  font-weight: bold;
+  background-color: var(--primary-color);
+  transition: background-color 0.2s, opacity 0.2s;
+}
+
+.button:hover {
+  background-color: var(--primary-color-lighter);
+}
+
+.button:active p {
+  transform: scale(0.9);
+}

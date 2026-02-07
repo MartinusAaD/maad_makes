@@ -1,0 +1,85 @@
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+
+body {
+  font-family: Roboto;
+  min-height: 100vh;
+}
+
+#root {
+  min-height: 100vh;
+  background: var(--color-bg-light);
+}
+
+button {
+  cursor: pointer;
+}
+
+@theme {
+  /* Colors */
+  --color-primary: #113e53;
+  --color-primary-lighter: #195672;
+  --color-primary-darker: #0a2633;
+  --color-light: #fafafa;
+  --color-dark: #1a1a1a;
+
+  --color-red: #ef4444;
+  --color-red-darker: #dc2626;
+
+  --color-green: #10b981;
+  --color-green-lighter: #34d399;
+  --color-green-darker: #059669;
+
+  --color-yellow: #f59e0b;
+  --color-yellow-lighter: #fcd34d;
+  --color-yellow-darker: #d97706;
+
+  --color-blue: #3b82f6;
+  --color-blue-lighter: #60a5fa;
+  --color-blue-darker: #2563eb;
+
+  --color-bg-light: #fafafa;
+  --color-bg-grey: #e5e5e5;
+
+  --color-error: #ff0000;
+
+  /* Typography/Prose customization */
+  --color-prose-body: var(--color-dark);
+  --color-prose-headings: var(--color-primary);
+  --color-prose-links: var(--color-primary);
+  --color-prose-bold: var(--color-dark);
+}
+
+@layer base {
+  /* h1 {
+    @apply Insert All Stylings Here;
+  } */
+}
+
+@layer components {
+  /* .input {
+    @apply Insert All Stylings Here;
+  } */
+}
+
+@keyframes fadeInScale {
+  from {
+    opacity: 0;
+    transform: scale(0.9) translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
