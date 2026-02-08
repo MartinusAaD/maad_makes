@@ -1,7 +1,9 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import ResponsiveWidthWrapper from "../ResponsiveWidthWrapper/ResponsiveWidthWrapper";
+import { MdMailOutline } from "react-icons/md";
 import { FaLinkedin } from "react-icons/fa";
+import { FaGithub } from "react-icons/fa";
 
 const Footer = () => {
   return (
@@ -22,19 +24,53 @@ const Footer = () => {
             </div>
 
             {/* Socials */}
-            <div className="flex items-center justify-center gap-4 ">
-              <a
-                href="https://www.linkedin.com/in/martinus-aamot-dahl/"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="LinkedIn Profile"
-                className=""
-              >
-                <FaLinkedin
-                  size={48}
-                  className="text-blue-600 hover:text-blue-700 bg-light"
-                />
-              </a>
+            <div className="flex gap-4">
+              {/* Email */}
+              <div className="flex items-center justify-center gap-4 ">
+                <a
+                  href="mailto:maad.makes@gmail.com"
+                  rel="noopener noreferrer"
+                  aria-label="MailTo"
+                  title="Contact me directly through email!"
+                >
+                  <MdMailOutline
+                    size={48}
+                    className="text-light hover:text-gray-300 "
+                  />
+                </a>
+              </div>
+
+              {/* Linkedin */}
+              <div className="flex items-center justify-center gap-4 ">
+                <a
+                  href="https://www.linkedin.com/in/martinus-aamot-dahl/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="LinkedIn Profile"
+                  title="A link to my LinkedIn Profile."
+                >
+                  <FaLinkedin
+                    size={48}
+                    className="text-light hover:text-gray-300 "
+                  />
+                </a>
+              </div>
+
+              {/* Github */}
+              <div className="flex items-center justify-center gap-4 ">
+                <a
+                  href="https://github.com/MartinusAaD"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Github Profile"
+                  title="A link to my Github Profile."
+                >
+                  <FaGithub
+                    size={48}
+                    className="text-light hover:text-gray-300 "
+                  />
+                </a>
+              </div>
             </div>
           </div>
 
