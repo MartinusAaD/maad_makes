@@ -23,6 +23,15 @@ const Footer = () => {
               </p>
             </div>
 
+            {/* Picutre of Yours Truly */}
+            <div className="w-full flex justify-center items-center">
+              <img
+                src="/images/martinus-headshot.jpg"
+                alt="Image of Martinus"
+                className="rounded-full w-full max-w-40"
+              />
+            </div>
+
             {/* Socials */}
             <div className="flex gap-4">
               {/* Email */}
