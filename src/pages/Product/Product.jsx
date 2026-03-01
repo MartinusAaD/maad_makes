@@ -52,9 +52,7 @@ const Product = () => {
   };
 
   // Find the product by slug
-  const product = useMemo(() => {
-    return products.find((p) => p.slug === slug);
-  }, [products, slug]);
+  const product = products.find((p) => p.slug === slug);
 
   // Track product view when product is loaded
   useEffect(() => {
