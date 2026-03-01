@@ -40,7 +40,7 @@ const howDoesItWork = [
 
 const Home = () => {
   const { products, loading } = useProducts();
-  const featuredProducts = products.slice(0, 6);
+  const featuredProducts = products.filter((p) => !p.isTempFill).slice(0, 6);
   const productsRef = useRef(null);
   const [productsVisible, setProductsVisible] = useState(false);
 

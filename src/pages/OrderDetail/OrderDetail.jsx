@@ -62,9 +62,10 @@ const OrderDetail = () => {
   const { products } = useProducts();
 
   const getImageUrl = (thumbnailId) => {
-    if (!thumbnailId || !images) return null;
+    if (!thumbnailId || !images) return "/images/image-not-found.png";
+    if (thumbnailId === "__placeholder__") return "/images/image-not-found.png";
     const image = images.find((img) => img.id === thumbnailId);
-    return image?.url || null;
+    return image?.url || "/images/image-not-found.png";
   };
 
   const [order, setOrder] = useState(null);
@@ -310,7 +311,10 @@ const OrderDetail = () => {
         price: onSale ? product.priceOnSale || regularPrice : regularPrice,
         originalPrice: regularPrice,
         quantity: 1,
-        thumbnailId: product.thumbnailImageId || product.thumbnailId || "",
+        thumbnailId:
+          product.thumbnailImageId ||
+          product.thumbnailId ||
+          (product.isTempFill ? "__placeholder__" : ""),
         isOnSale: onSale,
       };
       setItemsForm([...itemsForm, newItem]);
@@ -323,7 +327,7 @@ const OrderDetail = () => {
     .filter(
       (product) =>
         product.title?.toLowerCase().includes(productSearch.toLowerCase()) &&
-        product.isActive !== false,
+        (product.isActive !== false || product.isTempFill === true),
     )
     .slice(0, 10);
 
@@ -456,6 +460,9 @@ const OrderDetail = () => {
                           src={getImageUrl(item.thumbnailId)}
                           alt={item.title}
                           className="h-24 w-24 rounded-md border border-gray-200 object-cover"
+                          onError={(e) => {
+                            e.target.src = "/images/image-not-found.png";
+                          }}
                         />
                         <div className="flex-1 space-y-3">
                           <div className="flex items-start justify-between">
@@ -653,6 +660,9 @@ const OrderDetail = () => {
                           src={getImageUrl(item.thumbnailId)}
                           alt={item.title}
                           className="h-24 w-24 rounded-md border border-gray-200 object-cover"
+                          onError={(e) => {
+                            e.target.src = "/images/image-not-found.png";
+                          }}
                         />
                         <div className="flex-1">
                           <h3 className="font-semibold text-gray-900">

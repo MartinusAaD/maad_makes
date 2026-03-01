@@ -50,9 +50,10 @@ const Orders = () => {
   }, [location]);
 
   const getImageUrl = (thumbnailId) => {
-    if (!thumbnailId || !images) return null;
+    if (!thumbnailId || !images) return "/images/image-not-found.png";
+    if (thumbnailId === "__placeholder__") return "/images/image-not-found.png";
     const image = images.find((img) => img.id === thumbnailId);
-    return image?.url || null;
+    return image?.url || "/images/image-not-found.png";
   };
 
   const getStatusIcon = (status) => {
@@ -636,6 +637,9 @@ const Orders = () => {
                               src={getImageUrl(item.thumbnailId)}
                               alt={item.title}
                               className="h-full w-full object-cover"
+                              onError={(e) => {
+                                e.target.src = "/images/image-not-found.png";
+                              }}
                             />
                             {item.quantity > 1 && (
                               <div className="absolute right-0 top-0 rounded-bl bg-black bg-opacity-75 px-1 py-0.5 text-[10px] font-medium text-white">

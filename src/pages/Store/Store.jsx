@@ -69,7 +69,8 @@ const Store = () => {
     if (!products) return [];
 
     // Make a shallow copy so we don't mutate context data
-    let out = [...products];
+    // Exclude temporary fill products — they are only usable inside orders
+    let out = products.filter((p) => !p.isTempFill);
 
     // Filter by debounced search (title, description, keywords)
     const q = (debouncedSearch || "").trim().toLowerCase();

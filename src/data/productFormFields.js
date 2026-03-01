@@ -52,6 +52,7 @@ More info about product.`,
 
   isActive: true,
   isFeatured: false,
+  isTempFill: false,
 
   // Sale dates - product is on sale when current date is between from and to
   sale: {

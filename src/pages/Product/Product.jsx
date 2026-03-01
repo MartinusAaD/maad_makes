@@ -11,6 +11,7 @@ import { useProducts } from "../../context/ProductsContext";
 import { useImages } from "../../context/ImagesContext";
 import { useFilaments } from "../../context/FilamentsContext";
 import { useCart } from "../../context/CartContext";
+import { useAuth } from "../../context/AuthContext";
 import ResponsiveWidthWrapper from "../../components/ResponsiveWidthWrapper/ResponsiveWidthWrapper";
 import PokemonType from "../../components/PokemonType/PokemonType";
 import Button from "../../components/Button/Button";
@@ -21,10 +22,11 @@ import { trackProductView } from "../../utils/analytics";
 const Product = () => {
   const { slug } = useParams();
   const navigate = useNavigate();
-  const { products } = useProducts();
+  const { products, loading } = useProducts();
   const { images } = useImages();
   const { filaments } = useFilaments();
   const { addToCart } = useCart();
+  const { isAdmin } = useAuth();
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const [quantity, setQuantity] = useState(1);
   const [alert, setAlert] = useState(null);
@@ -103,12 +105,34 @@ const Product = () => {
 
   const onSale = product ? isProductOnSale(product) : false;
 
-  if (!product || !product.isActive) {
+  if (loading) {
     return (
       <div className="py-8 bg-bg-light min-h-screen">
         <ResponsiveWidthWrapper>
-          <div className="text-center py-12 text-2xl text-dark">
-            Loading ... / Product Not Found ...
+          <div className="flex flex-col items-center justify-center py-24 gap-4">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+            <p className="text-gray-500">Loading product...</p>
+          </div>
+        </ResponsiveWidthWrapper>
+      </div>
+    );
+  }
+
+  if (!product || !product.isActive || (product.isTempFill && !isAdmin)) {
+    return (
+      <div className="py-8 bg-bg-light min-h-screen">
+        <ResponsiveWidthWrapper>
+          <div className="flex flex-col items-center justify-center py-24 gap-4 text-center">
+            <h1 className="text-2xl font-bold text-dark">Product Not Found</h1>
+            <p className="text-gray-500">
+              This product doesn't exist or is no longer available.
+            </p>
+            <button
+              onClick={() => navigate(-1)}
+              className="mt-2 text-primary hover:underline font-medium"
+            >
+              ← Go back
+            </button>
           </div>
         </ResponsiveWidthWrapper>
       </div>

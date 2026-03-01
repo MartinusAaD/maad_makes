@@ -409,7 +409,10 @@ const ProductsForm = () => {
       const payload = structuredClone(formData);
 
       // Normalize images/variants from previews (if present)
-      payload.thumbnailId = thumbnailPreview?.id || payload.thumbnailId || "";
+      payload.thumbnailId =
+        thumbnailPreview?.id ||
+        payload.thumbnailId ||
+        (payload.isTempFill ? "__placeholder__" : "");
       payload.imageIds =
         imagePreviews?.map((i) => i.id) || payload.imageIds || [];
       payload.variants =
@@ -536,6 +539,26 @@ const ProductsForm = () => {
                   title="Check if product is featured"
                 >
                   Check if Featured
+                </label>
+              </div>
+
+              {/* isTempFill */}
+              <div className="flex items-center gap-1">
+                <input
+                  type="checkbox"
+                  id="isTempFill"
+                  name="isTempFill"
+                  className="w-6 h-6 accent-yellow-500"
+                  checked={formData.isTempFill || false}
+                  onChange={handleChange}
+                  title="Temporary fill product — hidden from store and home, only usable in orders"
+                />
+                <label
+                  htmlFor="isTempFill"
+                  className="font-bold"
+                  title="Temporary fill product — hidden from store and home, only usable in orders"
+                >
+                  Temporary Fill Product
                 </label>
               </div>
             </div>
