@@ -98,6 +98,16 @@ const Orders = () => {
     }
   };
 
+  const getCardStyle = (order) => {
+    if (order.isDemo || order.status === ORDER_STATUSES.COMPLETED) {
+      return "border-gray-200 bg-white";
+    }
+    if (order.status === ORDER_STATUSES.CANCELLED) {
+      return "border-red-200 bg-red-50/40";
+    }
+    return "border-red-300 bg-red-50";
+  };
+
   const getStatusDescription = (status) => {
     switch (status) {
       case ORDER_STATUSES.PENDING:
@@ -620,7 +630,7 @@ const Orders = () => {
               <div
                 key={order.id}
                 onClick={() => navigate(`/admin/orders/${order.id}`)}
-                className="cursor-pointer rounded-lg border border-gray-200 bg-white p-4 shadow-sm transition-shadow hover:shadow-md"
+                className={`cursor-pointer rounded-lg border p-4 shadow-sm transition-shadow hover:shadow-md ${getCardStyle(order)}`}
               >
                 <div className="flex flex-wrap items-center justify-between gap-4">
                   {/* Order Info */}

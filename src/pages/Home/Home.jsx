@@ -81,15 +81,32 @@ const Home = () => {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <section className="py-16 md:py-24 bg-white">
+      <section className="relative overflow-hidden bg-primary-darker -mt-20 pt-36 pb-16 md:pt-44 md:pb-24">
+        {/* Glowing orb accents */}
+        <div className="pointer-events-none absolute inset-0">
+          <div className="absolute -left-40 -top-40 h-125 w-125 rounded-full bg-primary-lighter/30 blur-[140px]" />
+          <div className="absolute -bottom-40 -right-40 h-125 w-125 rounded-full bg-primary-lighter/20 blur-[140px]" />
+          <div className="absolute left-1/2 top-1/2 h-72 w-72 -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary/50 blur-[100px]" />
+        </div>
+
+        {/* Dot grid texture */}
+        <div
+          className="pointer-events-none absolute inset-0 opacity-[0.07]"
+          style={{
+            backgroundImage:
+              "radial-gradient(circle, #ffffff 1px, transparent 1px)",
+            backgroundSize: "28px 28px",
+          }}
+        />
+
         <ResponsiveWidthWrapper>
-          <div className="flex flex-col items-center text-center px-4 space-y-8">
+          <div className="relative flex flex-col items-center text-center px-4 space-y-8">
             <div className="space-y-4 max-w-4xl">
-              <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-gray-900 leading-tight">
+              <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-white leading-tight">
                 Welcome to MAaD Makes
               </h1>
               <div className="flex justify-center gap-4">
-                <p className="text-xl md:text-2xl text-gray-600">
+                <p className="text-xl md:text-2xl text-white/70">
                   We sell Character inspired balls, TCG Accessories and more!
                 </p>
                 <span className="fi fi-no text-3xl"></span>
@@ -98,11 +115,14 @@ const Home = () => {
 
             <div className="flex flex-col sm:flex-row gap-4 pt-4 w-full max-w-md">
               <Link to="/store" className="flex-1">
-                <Button className="h-15 rounded-2xl">Browse Store</Button>
+                <Button className="h-15 rounded-2xl bg-white! text-primary! hover:bg-gray-100!">
+                  Browse Store
+                </Button>
               </Link>
-
               <Link to="/contact" className="flex-1">
-                <Button className="h-15 rounded-2xl">Contact Us</Button>
+                <Button className="h-15 rounded-2xl border border-white/30 bg-white/10! text-white! hover:bg-white/20!">
+                  Contact Us
+                </Button>
               </Link>
             </div>
           </div>
