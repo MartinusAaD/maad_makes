@@ -1,4 +1,10 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+  useCallback,
+} from "react";
 import {
   collection,
   query,
@@ -464,7 +470,7 @@ export const OrdersProvider = ({ children }) => {
     }
   };
   // Get order by ID
-  const getOrderById = async (orderId) => {
+  const getOrderById = useCallback(async (orderId) => {
     try {
       const orderRef = doc(database, "orders", orderId);
       const orderDoc = await getDoc(orderRef);
@@ -477,7 +483,7 @@ export const OrdersProvider = ({ children }) => {
       console.error("Error fetching order:", error);
       throw error;
     }
-  };
+  }, []);
 
   // Delete order
   const deleteOrder = async (orderId) => {

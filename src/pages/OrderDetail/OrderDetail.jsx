@@ -50,7 +50,6 @@ const OrderDetail = () => {
   const {
     getOrderById,
     updateOrderStatus,
-    updatePaymentStatus,
     updateOrderNotes,
     updateCustomerInfo,
     updateOrderItems,
@@ -105,6 +104,7 @@ const OrderDetail = () => {
           setOrder(orderData);
           setSelectedStatus(orderData.status);
           setIsPaid(orderData.isPaid);
+          setIsRefunded(orderData.isRefunded || false);
           setPaymentMethod(orderData.paymentMethod || "");
           setNotes(orderData.notes || "");
           setCustomerNumber(orderData.customerNumber || null);
@@ -131,73 +131,63 @@ const OrderDetail = () => {
     fetchOrder();
   }, [orderId, getOrderById]);
 
-  const handleStatusUpdate = async () => {
-    try {
-      setSaving(true);
-      await updateOrderStatus(orderId, selectedStatus, order.status);
-      setAlert({ type: "success", alertMessage: "Order status updated" });
-      // Refresh order data
-      const updatedOrder = await getOrderById(orderId);
-      setOrder(updatedOrder);
-    } catch (error) {
-      console.error("Error updating status:", error);
-      setAlert({ type: "error", alertMessage: "Failed to update status" });
-    } finally {
-      setSaving(false);
-    }
-  };
-
-  const handlePaymentUpdate = async () => {
+  const handleSaveAll = async () => {
     try {
       setSaving(true);
 
-      // Prepare update data
-      const orderRef = doc(database, "orders", orderId);
-      const updateData = {
-        isPaid,
-        isRefunded,
-        paymentMethod: paymentMethod || null,
-        updatedAt: serverTimestamp(),
-      };
+      const statusDirty = selectedStatus !== order.status;
+      const paymentDirty =
+        isPaid !== order.isPaid ||
+        isRefunded !== (order.isRefunded || false) ||
+        paymentMethod !== (order.paymentMethod || "");
+      const trackingDirty =
+        trackingCode !== (order.trackingCode || "") ||
+        shippingProvider !== (order.shippingProvider || "posten");
+      const notesDirty = notes !== (order.notes || "");
 
-      // Add history entry
-      const historyEntry = {
-        field: "payment",
-        oldValue: `${order.isPaid ? "Paid" : "Unpaid"}${order.isRefunded ? " (Refunded)" : ""}${order.paymentMethod ? ` (${order.paymentMethod})` : ""}`,
-        newValue: `${isPaid ? "Paid" : "Unpaid"}${isRefunded ? " (Refunded)" : ""}${paymentMethod ? ` (${paymentMethod})` : ""}`,
-        timestamp: Timestamp.now(),
-      };
+      if (!statusDirty && !paymentDirty && !trackingDirty && !notesDirty) {
+        setAlert({ type: "info", alertMessage: "No changes to save" });
+        return;
+      }
 
-      updateData.history = arrayUnion(historyEntry);
+      if (paymentDirty) {
+        const orderRef = doc(database, "orders", orderId);
+        const historyEntry = {
+          field: "payment",
+          oldValue: `${order.isPaid ? "Paid" : "Unpaid"}${order.isRefunded ? " (Refunded)" : ""}${order.paymentMethod ? ` (${order.paymentMethod})` : ""}`,
+          newValue: `${isPaid ? "Paid" : "Unpaid"}${isRefunded ? " (Refunded)" : ""}${paymentMethod ? ` (${paymentMethod})` : ""}`,
+          timestamp: Timestamp.now(),
+        };
+        await updateDoc(orderRef, {
+          isPaid,
+          isRefunded,
+          paymentMethod: paymentMethod || null,
+          updatedAt: serverTimestamp(),
+          history: arrayUnion(historyEntry),
+        });
+      }
 
-      await updateDoc(orderRef, updateData);
+      if (notesDirty) {
+        await updateOrderNotes(orderId, notes);
+      }
 
-      setAlert({ type: "success", alertMessage: "Payment status updated" });
-      // Refresh order data
+      if (trackingDirty) {
+        await updateTrackingCode(orderId, trackingCode, shippingProvider);
+      }
+
+      // Save status last so an explicit status choice wins over
+      // the auto-promotion to "shipped" that updateTrackingCode may apply.
+      if (statusDirty) {
+        await updateOrderStatus(orderId, selectedStatus, order.status);
+      }
+
       const updatedOrder = await getOrderById(orderId);
       setOrder(updatedOrder);
+      setSelectedStatus(updatedOrder.status);
+      setAlert({ type: "success", alertMessage: "Changes saved" });
     } catch (error) {
-      console.error("Error updating payment:", error);
-      setAlert({
-        type: "error",
-        alertMessage: "Failed to update payment status",
-      });
-    } finally {
-      setSaving(false);
-    }
-  };
-
-  const handleNotesUpdate = async () => {
-    try {
-      setSaving(true);
-      await updateOrderNotes(orderId, notes);
-      setAlert({ type: "success", alertMessage: "Notes updated" });
-      // Refresh order data
-      const updatedOrder = await getOrderById(orderId);
-      setOrder(updatedOrder);
-    } catch (error) {
-      console.error("Error updating notes:", error);
-      setAlert({ type: "error", alertMessage: "Failed to update notes" });
+      console.error("Error saving changes:", error);
+      setAlert({ type: "error", alertMessage: "Failed to save changes" });
     } finally {
       setSaving(false);
     }
@@ -1078,16 +1068,11 @@ const OrderDetail = () => {
                   </div>
                 )}
                 <Button
-                  onClick={handlePaymentUpdate}
-                  disabled={
-                    saving ||
-                    (isPaid === order.isPaid &&
-                      isRefunded === (order.isRefunded || false) &&
-                      paymentMethod === (order.paymentMethod || ""))
-                  }
+                  onClick={handleSaveAll}
+                  disabled={saving}
                   className="w-full"
                 >
-                  {saving ? "Updating..." : "Update Payment"}
+                  {saving ? "Saving..." : "Save Changes"}
                 </Button>
               </div>
             </div>
@@ -1113,11 +1098,11 @@ const OrderDetail = () => {
                   </FormSelect>
                 </div>
                 <Button
-                  onClick={handleStatusUpdate}
-                  disabled={saving || selectedStatus === order.status}
+                  onClick={handleSaveAll}
+                  disabled={saving}
                   className="w-full"
                 >
-                  {saving ? "Updating..." : "Update Status"}
+                  {saving ? "Saving..." : "Save Changes"}
                 </Button>
               </div>
             </div>
@@ -1169,49 +1154,11 @@ const OrderDetail = () => {
                   )}
                 </div>
                 <Button
-                  onClick={async () => {
-                    try {
-                      setSaving(true);
-                      const wasNotShipped = order.status !== "shipped";
-                      await updateTrackingCode(
-                        orderId,
-                        trackingCode,
-                        shippingProvider,
-                      );
-
-                      const successMessage = wasNotShipped
-                        ? "Tracking code saved and order marked as shipped"
-                        : "Tracking code updated";
-
-                      setAlert({
-                        type: "success",
-                        alertMessage: successMessage,
-                      });
-                      const updatedOrder = await getOrderById(orderId);
-                      setOrder(updatedOrder);
-                      setSelectedStatus(updatedOrder.status);
-                    } catch (error) {
-                      console.error("Error updating tracking code:", error);
-                      setAlert({
-                        type: "error",
-                        alertMessage: "Failed to update tracking code",
-                      });
-                    } finally {
-                      setSaving(false);
-                    }
-                  }}
-                  disabled={
-                    saving ||
-                    (trackingCode === (order.trackingCode || "") &&
-                      shippingProvider === (order.shippingProvider || "posten"))
-                  }
+                  onClick={handleSaveAll}
+                  disabled={saving}
                   className="w-full"
                 >
-                  {saving
-                    ? "Saving..."
-                    : order.status !== "shipped"
-                      ? "Save & Mark as Shipped"
-                      : "Save Tracking Info"}
+                  {saving ? "Saving..." : "Save Changes"}
                 </Button>
               </div>
             </div>
@@ -1235,11 +1182,11 @@ const OrderDetail = () => {
                   rows={4}
                 />
                 <Button
-                  onClick={handleNotesUpdate}
-                  disabled={saving || notes === (order.notes || "")}
+                  onClick={handleSaveAll}
+                  disabled={saving}
                   className="w-full"
                 >
-                  {saving ? "Saving..." : "Save Notes"}
+                  {saving ? "Saving..." : "Save Changes"}
                 </Button>
               </div>
             </div>
