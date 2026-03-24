@@ -34,27 +34,29 @@ const ProductCard = ({ product, animationDelay = 0 }) => {
   return (
     <NavLink
       to={`${"/product/"}${product.slug}`}
-      className="group flex flex-col w-full h-full overflow-hidden p-2 rounded-xl bg-white shadow-[0_5px_10px_rgba(16,24,40,0.4)] no-underline opacity-0 animate-[fadeIn_0.5s_ease-out_forwards] transition-[transform_200ms_cubic-bezier(0.34,1.56,0.64,1),box-shadow_200ms_ease] hover:scale-[1.05] hover:-translate-y-1 hover:shadow-[0_12px_24px_rgba(16,24,40,0.5)] hover:z-[1001] focus:scale-[1.03] focus:-translate-y-1 focus:shadow-[0_12px_24px_rgba(16,24,40,0.5)] focus:z-[1001]"
+      className="group flex flex-col w-full h-full overflow-hidden p-2 rounded-xl bg-white shadow-[0_5px_10px_rgba(16,24,40,0.4)] no-underline opacity-0 animate-[fadeIn_0.5s_ease-out_forwards] transition-[transform_200ms_cubic-bezier(0.34,1.56,0.64,1),box-shadow_200ms_ease] hover:scale-[1.05] hover:-translate-y-1 hover:shadow-[0_12px_24px_rgba(16,24,40,0.5)] hover:z-1001 focus:scale-[1.03] focus:-translate-y-1 focus:shadow-[0_12px_24px_rgba(16,24,40,0.5)] focus:z-1001"
       title={product.title}
       style={{ animationDelay: `${animationDelay}s` }}
     >
-      <img
-        src={src || "/images/image-not-found.png"}
-        alt={alt}
-        className="w-full h-auto object-cover rounded"
-        onError={(e) => {
-          e.target.onerror = null;
-          e.target.src = "/images/image-not-found.png";
-        }}
-      />
-      <p className="py-2 text-base md:text-sm font-bold text-dark whitespace-nowrap overflow-hidden text-ellipsis flex-shrink-0">
+      <div className="w-full aspect-square overflow-hidden rounded-xl bg-gray-50">
+        <img
+          src={src || "/images/image-not-found.png"}
+          alt={alt}
+          className="w-full h-full object-cover"
+          onError={(e) => {
+            e.target.onerror = null;
+            e.target.src = "/images/image-not-found.png";
+          }}
+        />
+      </div>
+      <p className="py-2 text-base md:text-sm font-bold text-dark whitespace-nowrap overflow-hidden text-ellipsis shrink-0">
         {product.title}
       </p>
       <div className="flex gap-2 items-center justify-between mt-auto">
         {/* Quick Add to Cart Button - shows on hover */}
         <button
           onClick={handleAddToCart}
-          className="flex items-center gap-1 bg-primary text-white px-2 py-1 rounded-full text-sm font-bold hover:bg-primary-darker transition-opacity duration-200 opacity-0 group-hover:opacity-100"
+          className="flex items-center gap-1 bg-primary text-white px-2 py-1 rounded-full text-sm font-bold hover:bg-primary-darker transition-opacity duration-200 opacity-100 md:opacity-0 md:group-hover:opacity-100"
           aria-label="Add to cart"
         >
           {showAddedFeedback ? (

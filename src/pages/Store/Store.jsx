@@ -188,9 +188,24 @@ const Store = () => {
   ).length;
 
   // Categories JSX - reusable for both desktop sidebar and mobile drawer
+  const activeProductCount = productsToRender.filter((p) => p.isActive).length;
+
   const categoriesContent = (
-    <div className="flex flex-col gap-1">
-      <h3 className="text-xl font-bold">Categories</h3>
+    <div className="flex flex-col gap-2">
+      <div className="flex items-center justify-between pb-2 border-b border-gray-200">
+        <h3 className="text-sm font-bold text-dark uppercase tracking-wider">
+          Filters
+        </h3>
+        {selectedCategories.length > 0 && (
+          <button
+            type="button"
+            onClick={() => setSelectedCategories([])}
+            className="text-xs text-primary hover:underline font-semibold"
+          >
+            Clear all
+          </button>
+        )}
+      </div>
 
       {/* On Sale special category - only show if products are on sale */}
       {hasProductsOnSale && (
@@ -262,7 +277,7 @@ const Store = () => {
               <div
                 className={`ml-3 flex flex-col gap-1 overflow-hidden transition-all duration-300 ease-in-out ${
                   parentActive
-                    ? "max-h-[500px] opacity-100 mb-1"
+                    ? "max-h-125 opacity-100 mb-1"
                     : "max-h-0 opacity-0"
                 }`}
               >
@@ -312,10 +327,22 @@ const Store = () => {
   );
 
   return (
-    <div className="flex pt-8 pb-12">
+    <div className="flex pt-8 pb-16">
       <ResponsiveWidthWrapper>
-        <div className="flex flex-col gap-4">
-          <div className="flex gap-4">
+        <div className="flex flex-col gap-6">
+          {/* Page Header */}
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-1 pb-4 border-b border-gray-200">
+            <div>
+              <h1 className="text-3xl font-bold text-dark">Store</h1>
+              <p className="text-sm text-gray-400 mt-1">
+                {activeProductCount} product
+                {activeProductCount !== 1 ? "s" : ""} found
+              </p>
+            </div>
+          </div>
+
+          {/* Search + Sort Bar */}
+          <div className="flex flex-col sm:flex-row gap-3">
             <div className="flex flex-1 items-center relative">
               <FontAwesomeIcon
                 icon={faSearch}
@@ -326,19 +353,32 @@ const Store = () => {
                 placeholder="Search products..."
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                className="w-full p-2 pl-10 min-w-[220px] border border-gray-300 rounded"
+                className={`w-full p-2 pl-10 border border-gray-300 rounded bg-white focus:outline-none focus:border-primary/70 transition-colors${search ? " pr-9" : ""}`}
               />
+              {search && (
+                <button
+                  type="button"
+                  onClick={() => setSearch("")}
+                  className="absolute right-3 text-gray-400 hover:text-gray-600 transition-colors"
+                  aria-label="Clear search"
+                >
+                  <FontAwesomeIcon icon={faXmark} />
+                </button>
+              )}
             </div>
 
-            <div className="flex justify-end gap-2 items-center">
-              <label className="font-bold text-dark" htmlFor="store-sort">
+            <div className="flex gap-2 items-center">
+              <label
+                className="font-bold text-dark shrink-0"
+                htmlFor="store-sort"
+              >
                 Sort:
               </label>
               <select
                 id="store-sort"
                 value={sort}
                 onChange={(e) => setSort(e.target.value)}
-                className="w-full p-2 rounded border-2 border-primary/50 bg-light text-dark cursor-pointer hover:border-primary focus:border-primary focus:outline-none transition-colors"
+                className="flex-1 sm:flex-none p-2 rounded border-2 border-primary/50 bg-light text-dark cursor-pointer hover:border-primary focus:border-primary focus:outline-none transition-colors"
               >
                 <option value="default">Default</option>
                 <option value="title-asc">Title A → Z</option>
@@ -388,10 +428,43 @@ const Store = () => {
                     animationDelay={index * 0.05}
                   />
                 ))}
+
+              {/* Empty state */}
+              {activeProductCount === 0 && (
+                <div className="col-span-full flex flex-col items-center justify-center py-16 px-4 text-center">
+                  <FontAwesomeIcon
+                    icon={faSearch}
+                    className="text-5xl text-gray-200 mb-4"
+                  />
+                  <h3 className="text-lg font-bold text-gray-400 mb-2">
+                    No products found
+                  </h3>
+                  <p className="text-sm text-gray-400 mb-4">
+                    Try adjusting your search or clearing your filters
+                  </p>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setSearch("");
+                      setSelectedCategories([]);
+                    }}
+                    className="text-primary font-semibold text-sm hover:underline"
+                  >
+                    Clear all filters
+                  </button>
+                </div>
+              )}
             </div>
           </div>
         </div>
       </ResponsiveWidthWrapper>
+
+      {/* Mobile Filter Backdrop */}
+      <div
+        className={`fixed inset-0 bg-black/40 z-40 md:hidden transition-opacity duration-300 ${isFilterOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"}`}
+        onClick={() => setIsFilterOpen(false)}
+        aria-hidden="true"
+      />
 
       {/* Mobile Filter Drawer */}
       <div

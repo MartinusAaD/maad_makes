@@ -1,206 +1,217 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import ResponsiveWidthWrapper from "../../components/ResponsiveWidthWrapper/ResponsiveWidthWrapper";
-import Button from "../../components/Button/Button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faExternalLinkAlt,
   faEnvelope,
   faBell,
   faInfoCircle,
+  faArrowRight,
+  faPrint,
+  faSearch,
 } from "@fortawesome/free-solid-svg-icons";
 
 const CharacterDesigns = () => {
   return (
-    <div className="w-full flex flex-col items-center gap-8 bg-bg-light py-12 min-h-screen">
-      <ResponsiveWidthWrapper>
-        <div className="max-w-4xl mx-auto">
-          {/* Header */}
-          <div className="text-center mb-12">
-            <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-              Character Ball Designs
+    <div className="w-full min-h-screen bg-bg-light">
+      {/* Hero */}
+      <div className="bg-linear-to-br from-primary-darker via-primary to-primary-lighter relative overflow-hidden -mt-20 pt-20">
+        {/* Decorative circles */}
+        <div className="absolute -top-16 -right-16 w-72 h-72 rounded-full bg-white/5 pointer-events-none" />
+        <div className="absolute -bottom-10 -left-10 w-48 h-48 rounded-full bg-white/5 pointer-events-none" />
+
+        <ResponsiveWidthWrapper>
+          <div className="py-16 md:py-20 relative z-10">
+            <span className="inline-block bg-white/15 text-white text-xs font-bold uppercase tracking-widest px-3 py-1.5 rounded-full mb-5">
+              N3D Melbourne
+            </span>
+            <h1 className="text-4xl md:text-5xl font-bold text-white mb-4 leading-tight">
+              100+ Character Ball Designs
             </h1>
-            <p className="text-xl text-gray-600">
-              Learn about available designs and how to request prints
+            <p className="text-lg text-white/75 max-w-xl">
+              Can't find your favourite character in our store? Browse the full
+              catalog or join the waitlist — we'll print it for you.
             </p>
           </div>
+        </ResponsiveWidthWrapper>
+      </div>
 
-          {/* Main Content Cards */}
-          <div className="flex flex-col gap-6">
-            {/* N3D Melbourne Catalog Card */}
-            <div className="bg-white rounded-lg shadow-md p-8 border border-gray-200">
-              <div className="flex items-start gap-4 mb-6">
-                <div className="flex-shrink-0">
-                  <div className="w-16 h-16 bg-primary rounded-full flex items-center justify-center">
+      <ResponsiveWidthWrapper>
+        <div className="max-w-4xl mx-auto py-12 flex flex-col gap-8">
+          {/* --- How It Works --- */}
+          <section>
+            <h2 className="text-xs font-bold uppercase tracking-widest text-primary mb-6">
+              How It Works
+            </h2>
+            <div className="grid md:grid-cols-3 gap-4 relative">
+              {/* Connecting line (desktop only) */}
+              <div className="hidden md:block absolute top-8 left-[calc(16.66%+8px)] right-[calc(16.66%+8px)] h-px bg-primary/20" />
+
+              {[
+                {
+                  icon: faSearch,
+                  step: "1",
+                  title: "Browse the Catalog",
+                  desc: "Explore 100+ unique character ball designs on the N3D Melbourne website",
+                },
+                {
+                  icon: faEnvelope,
+                  step: "2",
+                  title: "Request or Join Waitlist",
+                  desc: "Found your character? Request a print. Don't see it? Join the waitlist",
+                },
+                {
+                  icon: faPrint,
+                  step: "3",
+                  title: "Get Your Ball",
+                  desc: "We will contact you when the design is available!'",
+                },
+              ].map(({ icon, step, title, desc }) => (
+                <div
+                  key={step}
+                  className="relative bg-white rounded-xl p-6 shadow-sm border border-gray-100 flex flex-col items-center text-center gap-3"
+                >
+                  <div className="w-14 h-14 rounded-full bg-primary flex items-center justify-center shadow-md relative z-10">
                     <FontAwesomeIcon
-                      icon={faExternalLinkAlt}
-                      className="text-white text-2xl"
+                      icon={icon}
+                      className="text-white text-xl"
                     />
+                    <span className="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-green text-white text-xs font-bold flex items-center justify-center leading-none">
+                      {step}
+                    </span>
                   </div>
-                </div>
-                <div>
-                  <h2 className="text-3xl font-bold text-gray-900 mb-2">
-                    Browse 100+ Character Designs
-                  </h2>
-                  <p className="text-lg text-gray-600">
-                    Explore the full N3D Melbourne catalog
+                  <h3 className="font-bold text-dark text-base">{title}</h3>
+                  <p className="text-sm text-gray-500 leading-relaxed">
+                    {desc}
                   </p>
                 </div>
+              ))}
+            </div>
+          </section>
+
+          {/* --- Browse Catalog Card --- */}
+          <section className="rounded-2xl overflow-hidden shadow-md border border-gray-100">
+            {/* Coloured header strip */}
+            <div className="bg-linear-to-r from-primary to-primary-lighter px-8 py-6 flex items-center gap-4">
+              <div className="w-12 h-12 rounded-full bg-white/20 flex items-center justify-center shrink-0">
+                <FontAwesomeIcon
+                  icon={faExternalLinkAlt}
+                  className="text-white text-xl"
+                />
               </div>
-
-              <div className="space-y-4">
-                <p className="text-gray-700 leading-relaxed">
-                  All character ball designs featured in our store are created
-                  by <strong className="text-primary">N3D Melbourne</strong>, a
-                  talented designer who has created{" "}
-                  <strong>over 100+ unique character ball designs</strong>!
+              <div>
+                <h2 className="text-2xl font-bold text-white leading-tight">
+                  Browse 100+ Character Designs
+                </h2>
+                <p className="text-white/70 text-sm mt-0.5">
+                  Explore the full N3D Melbourne catalog
                 </p>
-
-                <p className="text-gray-700 leading-relaxed">
-                  The products shown in our store are only the ones I've
-                  personally printed and photographed. However, you can browse
-                  the entire N3D Melbourne design catalog and request any design
-                  to be printed for you!
-                </p>
-
-                <div className="bg-blue-50 border-l-4 border-blue-400 p-4 rounded my-4">
-                  <p className="text-sm text-gray-700">
-                    <FontAwesomeIcon icon={faInfoCircle} className="mr-2" />
-                    <strong>Note:</strong> Viewing the N3D Melbourne catalog
-                    requires creating a free account on their website.
-                  </p>
-                </div>
-
-                <div className="flex flex-col sm:flex-row gap-3 pt-4">
-                  <a
-                    href="https://www.n3dmelbourne.com/dashboard/designs"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex-1"
-                  >
-                    <Button className="w-full flex items-center justify-center gap-2">
-                      <FontAwesomeIcon icon={faExternalLinkAlt} />
-                      View N3D Melbourne Catalog
-                    </Button>
-                  </a>
-                  <Link to="/contact" className="flex-1">
-                    <Button className="w-full flex items-center justify-center gap-2 bg-white text-primary border-2 border-primary hover:bg-primary hover:text-white">
-                      <FontAwesomeIcon icon={faEnvelope} />
-                      Request Custom Print
-                    </Button>
-                  </Link>
-                </div>
               </div>
             </div>
 
-            {/* Waitlist Card */}
-            <div className="bg-white rounded-lg shadow-md p-8 border border-gray-200">
-              <div className="flex items-start gap-4 mb-6">
-                <div className="flex-shrink-0">
-                  <div className="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center">
-                    <FontAwesomeIcon
-                      icon={faBell}
-                      className="text-white text-2xl"
-                    />
-                  </div>
-                </div>
-                <div>
-                  <h2 className="text-3xl font-bold text-gray-900 mb-2">
-                    Join the Waitlist
-                  </h2>
-                  <p className="text-lg text-gray-600">
-                    Get notified when your favorite character is available
-                  </p>
-                </div>
+            <div className="bg-white p-8 flex flex-col gap-5">
+              <p className="text-gray-700 leading-relaxed">
+                All character ball designs in our store are created by{" "}
+                <strong className="text-primary">N3D Melbourne</strong> — a
+                talented designer with over{" "}
+                <strong>100+ unique character ball designs</strong>. What we
+                have listed are only the ones we've personally printed and
+                photographed, but you can request <em>any</em> design from their
+                catalog.
+              </p>
+
+              <div className="flex items-start gap-3 bg-blue-50 border border-blue-200 rounded-xl p-4">
+                <FontAwesomeIcon
+                  icon={faInfoCircle}
+                  className="text-blue-500 mt-0.5 shrink-0"
+                />
+                <p className="text-sm text-gray-700">
+                  <strong>Heads up:</strong> Viewing the N3D Melbourne catalog
+                  requires creating a free account on their website.
+                </p>
               </div>
 
-              <div className="space-y-4">
-                <p className="text-gray-700 leading-relaxed">
-                  Can't find your favorite characters design in the N3D
-                  Melbourne catalog? No problem! You can request to be added to
-                  my personal waitlist.
+              <div className="flex flex-col sm:flex-row gap-3 pt-2">
+                <a
+                  href="https://www.n3dmelbourne.com/dashboard/designs"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex-1 flex items-center justify-center gap-2 bg-primary text-white font-bold rounded-xl px-6 py-3 hover:bg-primary-lighter transition-colors"
+                >
+                  <FontAwesomeIcon icon={faExternalLinkAlt} />
+                  View N3D Melbourne Catalog
+                </a>
+                <Link
+                  to="/contact"
+                  className="flex-1 flex items-center justify-center gap-2 border-2 border-primary text-primary font-bold rounded-xl px-6 py-3 hover:bg-primary hover:text-white transition-colors"
+                >
+                  <FontAwesomeIcon icon={faEnvelope} />
+                  Request a Custom Print
+                </Link>
+              </div>
+            </div>
+          </section>
+
+          {/* --- Waitlist Card --- */}
+          <section className="rounded-2xl overflow-hidden shadow-md border border-gray-100">
+            {/* Coloured header strip */}
+            <div className="bg-linear-to-r from-green-darker to-green px-8 py-6 flex items-center gap-4">
+              <div className="w-12 h-12 rounded-full bg-white/20 flex items-center justify-center shrink-0">
+                <FontAwesomeIcon icon={faBell} className="text-white text-xl" />
+              </div>
+              <div>
+                <h2 className="text-2xl font-bold text-white leading-tight">
+                  Join the Waitlist
+                </h2>
+                <p className="text-white/70 text-sm mt-0.5">
+                  Get notified when your favourite character is available
                 </p>
-
-                <p className="text-gray-700 leading-relaxed">
-                  When a design for your requested character becomes available
-                  (either from N3D Melbourne or other creators), I'll contact
-                  you right away so you can be among the first to get it!
-                </p>
-
-                <div className="bg-yellow-50 border-l-4 border-yellow-400 p-4 rounded my-4">
-                  <p className="text-sm text-gray-700">
-                    <FontAwesomeIcon icon={faInfoCircle} className="mr-2" />
-                    <strong>Important:</strong> Please note that there are no
-                    guarantees if or when specific character designs will be
-                    created or become available. This is a notification service
-                    only.
-                  </p>
-                </div>
-
-                <div className="pt-4">
-                  <Link to="/contact" className="block">
-                    <Button className="w-full flex items-center justify-center gap-2">
-                      <FontAwesomeIcon icon={faBell} />
-                      Join Waitlist
-                    </Button>
-                  </Link>
-                  <p className="text-sm text-gray-500 text-center mt-2">
-                    Use the "Waitlist" subject when contacting us
-                  </p>
-                </div>
               </div>
             </div>
 
-            {/* How It Works */}
-            <div className="bg-gradient-to-r from-primary-lighter/10 to-blue-50 rounded-lg p-8 border border-primary-lighter/30">
-              <h3 className="text-2xl font-bold text-gray-900 mb-6">
-                How It Works
-              </h3>
-              <div className="grid md:grid-cols-3 gap-6">
-                <div className="flex flex-col items-center text-center">
-                  <div className="w-12 h-12 bg-primary rounded-full flex items-center justify-center text-white font-bold text-xl mb-3">
-                    1
-                  </div>
-                  <h4 className="font-bold text-gray-900 mb-2">
-                    Browse Designs
-                  </h4>
-                  <p className="text-sm text-gray-600">
-                    Check the N3D Melbourne catalog for available character ball
-                    designs
-                  </p>
-                </div>
-                <div className="flex flex-col items-center text-center">
-                  <div className="w-12 h-12 bg-primary rounded-full flex items-center justify-center text-white font-bold text-xl mb-3">
-                    2
-                  </div>
-                  <h4 className="font-bold text-gray-900 mb-2">
-                    Request or Join Waitlist
-                  </h4>
-                  <p className="text-sm text-gray-600">
-                    Found your design? Request a custom print. Don't see it?
-                    Join the waitlist
-                  </p>
-                </div>
-                <div className="flex flex-col items-center text-center">
-                  <div className="w-12 h-12 bg-primary rounded-full flex items-center justify-center text-white font-bold text-xl mb-3">
-                    3
-                  </div>
-                  <h4 className="font-bold text-gray-900 mb-2">
-                    Get Your Ball
-                  </h4>
-                  <p className="text-sm text-gray-600">
-                    I'll print your design and contact you when it's ready or
-                    available
-                  </p>
-                </div>
+            <div className="bg-white p-8 flex flex-col gap-5">
+              <p className="text-gray-700 leading-relaxed">
+                Can't find your favourite character's design anywhere? No
+                problem — you can request to be added to our personal waitlist.
+                When a design becomes available, we'll reach out so you can be
+                among the first to get it.
+              </p>
+
+              <div className="flex items-start gap-3 bg-green-50 border border-green/30 rounded-xl p-4">
+                <FontAwesomeIcon
+                  icon={faInfoCircle}
+                  className="text-green-darker mt-0.5 shrink-0"
+                />
+                <p className="text-sm text-gray-700">
+                  <strong>Please note:</strong> There are no guarantees if or
+                  when specific character designs will be created.
+                </p>
+              </div>
+
+              <div className="flex flex-col gap-2 pt-2">
+                <Link
+                  to="/contact"
+                  className="flex items-center justify-center gap-2 bg-green text-white font-bold rounded-xl px-6 py-3 hover:bg-green-lighter transition-colors"
+                >
+                  <FontAwesomeIcon icon={faBell} />
+                  Join Waitlist
+                </Link>
+                <p className="text-xs text-gray-400 text-center">
+                  Use the "Waitlist" subject when contacting us
+                </p>
               </div>
             </div>
-          </div>
+          </section>
 
           {/* Back to Store */}
-          <div className="text-center mt-12">
-            <Link to="/store">
-              <Button className="px-8">Back to Store</Button>
+          <div className="text-center pt-2">
+            <Link
+              to="/store"
+              className="inline-flex items-center gap-2 text-primary font-semibold hover:underline text-sm"
+            >
+              <FontAwesomeIcon icon={faArrowRight} className="rotate-180" />
+              Back to Store
             </Link>
           </div>
         </div>
