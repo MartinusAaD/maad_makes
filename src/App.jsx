@@ -23,7 +23,9 @@ function App() {
       <ScrollToTop />
       <header>
         <Navbar />
-        {currentUser && isAdmin && <NavbarAdmin />}
+        {location.pathname !== "/portfolio" && currentUser && isAdmin && (
+          <NavbarAdmin />
+        )}
       </header>
       <main className="min-h-screen">
         <Outlet />
